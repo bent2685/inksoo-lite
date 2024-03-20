@@ -1,34 +1,22 @@
 # inksoo-lite
 
-An Electron application with Vue and TypeScript
+> 一个即时渲染的Markdown编辑器
 
-## Recommended IDE Setup
+## 目前支持情况
 
-* [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
+- [x] 通用Markdown语法
+- [x] 键盘按键渲染(`<kbd>Key</kbd>`)
+- [x] 跟随系统的深浅色主题
+- [x] mac端毛玻璃效果
+- [x] 大纲的展示和跳转
+- [x] 文件的打开/保存/另存为
 
-## Project Setup
+---
 
-### Install
+## 主要依赖
 
-```bash
-$ pnpm install
-```
-
-### Development
-
-```bash
-$ pnpm dev
-```
-
-### Build
-
-```bash
-# For windows
-$ pnpm build:win
-
-# For macOS
-$ pnpm build:mac
-
-# For Linux
-$ pnpm build:linux
-```
+- Electron
+- Vue3
+- Vite
+- [Milkdown](https://milkdown.dev/)(一个即时渲染md语法的框架)
+  仓库地址: https://github.com/Milkdown/milkdown
