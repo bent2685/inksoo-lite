@@ -34,7 +34,7 @@ console.log(outline.value)
   &__list {
     height: 100%;
     overflow: auto;
-    padding: 12px 0 60px;
+    padding: 4px 0 60px;
   }
   ::-webkit-scrollbar {
     width: 3px;

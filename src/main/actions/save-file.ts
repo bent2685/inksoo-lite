@@ -1,6 +1,7 @@
 import fs from 'fs'
 import { WriteFileOptions } from 'fs'
 import { dialog, SaveDialogOptions } from 'electron'
+import path from "path";
 
 export const saveAs /* 另存为 */ = (
   taskId: string,
@@ -77,7 +78,8 @@ export const saveFile /* 保存文件 */ = (
         reject(err)
         return
       }
-      const filename = filepath.split('/').pop() || ''
+      const filename = path.basename(filepath) || ''
+
       r({ filepath, filename })
     })
   })

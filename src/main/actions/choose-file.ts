@@ -1,5 +1,6 @@
 import { dialog } from 'electron'
 import fs from 'fs'
+import path from "path";
 
 export const chooseFile /* 选择文件 */ : (suffix: string[]) => Promise<IChooseFile> = (
   suffix = []
@@ -16,7 +17,8 @@ export const chooseFile /* 选择文件 */ : (suffix: string[]) => Promise<IChoo
           return
         }
         const filepath = res.filePaths[0]
-        const filename = filepath.split('/').pop() || 'unknow file'
+        
+        const filename = path.basename(filepath) || 'unknow file'
 
         let data = ''
         const stream = fs.createReadStream(filepath, 'utf-8')

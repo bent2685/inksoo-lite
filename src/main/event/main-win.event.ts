@@ -12,12 +12,11 @@ export const createMainWindow: () => BrowserWindow = () => {
     height: 670,
     minHeight: 480,
     minWidth: 640,
-    show: false,
-
-    titleBarStyle: 'hidden',
-    frame: false,
     ...(process.platform === 'darwin'
       ? {
+          show: false,
+          titleBarStyle:'hidden',
+          frame: false,
           transparent: true
         }
       : {}),
