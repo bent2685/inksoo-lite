@@ -1,6 +1,6 @@
 {
   "name": "inksoo-lite",
-  "version": "0.0.1 beta",
+  "version": "0.0.1",
   "description": "An Electron application with Vue and TypeScript",
   "main": "./out/main/index.js",
   "author": "bent2685",
