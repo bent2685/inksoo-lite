@@ -5,7 +5,6 @@
 import { ref, toRefs } from 'vue'
 import { useOutlineStore } from '@renderer/store/outline.store'
 const { outline } = toRefs(useOutlineStore())
-console.log(outline.value)
 </script>
 
 <template>

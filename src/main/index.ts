@@ -2,7 +2,6 @@ import { app, BrowserWindow } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { createMainWindow } from './event/main-win.event'
 let mainWindow: BrowserWindow | null = null
-app.commandLine.appendSwitch('remote-debugging-port', '9222')
 
 app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.electron')

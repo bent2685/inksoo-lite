@@ -8,8 +8,6 @@ export const useOutlineStore = defineStore('outline', () => {
   const outline = ref<OutlineItem[]>([])
 
   const setOutline = (opt: OutlineItem[]) => {
-    console.log(opt)
-
     outline.value = opt
   }
 

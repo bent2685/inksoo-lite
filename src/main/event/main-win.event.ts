@@ -12,16 +12,16 @@ export const createMainWindow: () => BrowserWindow = () => {
     height: 670,
     minHeight: 480,
     minWidth: 640,
+    icon: join(__dirname, '../../../resources/icon.ico'),
     ...(process.platform === 'darwin'
       ? {
           show: false,
-          titleBarStyle:'hidden',
+          titleBarStyle: 'hidden',
           frame: false,
           transparent: true
         }
       : {}),
     trafficLightPosition: { x: 10, y: 8 },
-    ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,

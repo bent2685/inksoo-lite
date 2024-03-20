@@ -6,7 +6,6 @@
 <script setup lang="ts">
 import { Editor, rootCtx, defaultValueCtx, EditorStatus } from '@milkdown/core'
 import { Milkdown, useEditor } from '@milkdown/vue'
-import shortid from 'shortid'
 import {
   commonmark,
   listItemSchema,
