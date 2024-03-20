@@ -1,0 +1,24 @@
+pre:has(code) {
+    span {
+        &.function {
+            color: #14FF00;
+        }
+
+        &.punctuation {
+            color: #888;
+        }
+
+        &.keyword {
+            color: $primary;
+        }
+
+        &.number {
+            color: #f99;
+        }
+
+        &.string {
+            color: #99f;
+            
+        }
+    }
+}

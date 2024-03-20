@@ -1,0 +1,163 @@
+@import url('./prism.scss');
+
+.milkdown-theme-inksoo {
+    min-height: 70vh;
+
+
+    &.ProseMirror-focused {
+        border: 0;
+        outline: none;
+    }
+
+    margin: 0 auto;
+    max-width: 600px;
+
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h4,
+    h5,
+    h6 {
+        color: $text;
+        margin-block-start: 0.2rem;
+        margin-block-end: 0.2rem;
+    }
+
+    p {
+        color: $text;
+
+        code {
+            background: $border-color;
+            color: $text2;
+            border-radius: 5px;
+            font-size: .8rem;
+            padding: .2rem;
+            margin: 0 .2rem;
+        }
+    }
+
+    pre:has(code) {
+        background: #1E1E1E;
+        border: 1px solid $border-color;
+        padding: 1rem;
+        border-radius: 5px;
+        line-height: 1.5;
+
+        code {
+            color: #fff;
+        }
+    }
+
+    h1 {
+        font-size: 2rem;
+
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    h3 {
+        font-size: 1.6rem;
+    }
+
+    h4 {
+        font-size: 1.4rem;
+    }
+
+    h5 {
+        font-size: 1.2rem;
+    }
+
+    h6 {
+        font-size: 1rem;
+    }
+
+    hr {
+        display: block;
+        height: 1px;
+        border: 0;
+        background: $border-color;
+        opacity: 1;
+        margin: 16px 0;
+    }
+
+    blockquote {
+        margin-inline-start: 0rem;
+        margin-inline-end: 1rem;
+        position: relative;
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin-inline-start: 1rem;
+
+        }
+
+        blockquote {
+            margin-inline-start: 1rem;
+
+        }
+
+        p {
+            margin-inline-start: 1rem;
+
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            height: 100%;
+            top: 0;
+            width: 4px;
+            background: $primary;
+        }
+    }
+
+    ol,
+    ul {
+        margin-block-start: 0;
+        margin-block-end: 0;
+        margin-inline-start: 0;
+        padding-inline-start: 0rem;
+
+        li {
+
+
+            p {
+                margin: 0;
+            }
+        }
+    }
+
+
+
+    .inksoo {
+        &-keyboard {
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: inset 0px -3px 0px $border-color;
+            padding: 5px 8px;
+            border: 1px solid $border-color;
+            font-weight: 800;
+            font-size: 12px;
+            transition: .3s;
+
+            &:hover {
+                background: $bg2;
+            }
+
+            &:active {
+                box-shadow: none;
+                background: $bg;
+                color: $text2;
+            }
+        }
+    }
+}

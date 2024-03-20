@@ -1,0 +1,113 @@
+html {
+    font-size: 14px;
+    color: var(--text-2);
+    transition: .3s;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+html.dark {
+    --primary-color: #5F5DD2;
+    --text: #ffffff;
+    --text-2: #848484;
+    --bg: #161616;
+    --bg-2: #1C1A1A;
+    --border-color: #373737;
+    --bg-2-fuzzy: #1C1A1ABA;
+    --warning: #9E1515;
+}
+
+html {
+    --primary-color: #5F5DD2;
+    --text: #000000;
+    --text-2: #848484;
+    --bg: #F8F8F8;
+    --bg-2: #F1F1F1;
+    --border-color: #E8D7D7;
+    --bg-2-fuzzy: #F1F1F1A7;
+    --warning: #ED2E2E;
+}
+
+
+@media (prefers-color-scheme: dark) {
+    body {
+        // background: #333;
+        color: white;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        // background: #ddd;
+        color: black;
+    }
+}
+
+
+.no-drag {
+    // electron禁止拖动
+    -webkit-app-region: no-drag;
+}
+
+/*滚动条整体部分,必须要设置 , 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    transition: .3s;
+}
+
+/*滚动条的轨道*/
+::-webkit-scrollbar-track {
+    background: var(--bg-2);
+    border: 1px solid $border-color;
+}
+
+/*滚动条的滑块按钮*/
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: var(--border-color);
+    /* 滑块边框 */
+}
+
+/*滚动条的上下两端的按钮*/
+::-webkit-scrollbar-button {
+    height: 0;
+    background-color: var(--border-color);
+
+}
+
+/*滚动条交叉地方的样式*/
+::-webkit-scrollbar-corner {
+    background-color: var(--bg);
+}
+
+.board-title-area {
+    display: flex;
+    color: $text2;
+    align-items: center;
+    padding: 0 12px;
+    user-select: none;
+    border-bottom: 1px solid $border-color;
+
+    .ico {
+        font-size: 10px;
+        font-weight: 800;
+    }
+
+    h4 {
+        font-size: 12px;
+        margin-left: 4px;
+        line-height: 0;
+        opacity: 0.6;
+    }
+}
