@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { WriteFileOptions } from 'fs'
-import { dialog, SaveDialogOptions } from 'electron'
-import path from "path";
+import { dialog, SaveDialogOptions, ipcMain } from 'electron'
+import path from 'path'
 
 export const saveAs /* 另存为 */ = (
   taskId: string,
@@ -44,11 +44,14 @@ export const save /* 保存 */ = async (
   opt4Save: WriteFileOptions = {
     encoding: 'utf-8'
   },
-  taskId: string
+  taskId: string,
+  opt4Dialog: SaveDialogOptions = {
+    title: 'Save as'
+  }
 ): Promise<ISaveAsReturn> => {
   // 文件不存在则保存
   if (!filepath || !fs.existsSync(filepath)) {
-    const res = await saveAs(taskId, data, opt4Save)
+    const res = await saveAs(taskId, data, opt4Save, opt4Dialog)
 
     return {
       taskId,
@@ -82,5 +85,41 @@ export const saveFile /* 保存文件 */ = (
 
       r({ filepath, filename })
     })
+  })
+}
+
+export const changesSaveDialog = (win, callback) => {
+  // 若用户未保存，提示用户是否需要保存
+  win.webContents.send('check-save')
+  ipcMain.once('check-save-reply', async (_, isSave) => {
+    if (!isSave) {
+      const result = await dialog.showMessageBox({
+        type: 'question',
+        message: 'Do you want to save and continue, discard changes, or cancel?',
+        buttons: ['Save and Continue', 'Discard Changes', 'Cancel'],
+        defaultId: 0,
+        cancelId: 2
+      })
+      switch (result.response) {
+        case 0:
+          //! 保存并继续
+          win.webContents.send('save-file-cmd', { saveNew: false })
+          ipcMain.once('file-save-okay', (_) => {
+            // win.webContents.send('new-file-cmd')
+            callback()
+          })
+          break
+        case 1:
+          //! 放弃更改并继续
+          // win.webContents.send('new-file-cmd')
+          callback()
+          break
+        case 2:
+          return
+      }
+      return
+    }
+    callback()
+    // win.webContents.send('new-file-cmd')
   })
 }

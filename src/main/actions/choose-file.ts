@@ -1,37 +1,22 @@
 import { dialog } from 'electron'
 import fs from 'fs'
-import path from "path";
-
-export const chooseFile /* 选择文件 */ : (suffix: string[]) => Promise<IChooseFile> = (
-  suffix = []
-) => {
+import path from 'path'
+import { getFileDataByFilePath } from '../utils/file.utils'
+import db from '../storage/connect'
+export const chooseFile /* 选择文件 */ : (suffix: string[]) => Promise<string> = (suffix = []) => {
   return new Promise((resolve, reject) => {
     dialog
       .showOpenDialog({
         properties: ['openFile'],
         filters: [{ name: 'Markdown', extensions: suffix }]
       })
-      .then((res) => {
+      .then(async (res) => {
         if (res.canceled || res.filePaths?.length <= 0) {
           dialog.showErrorBox('fail', 'select file fail')
           return
         }
         const filepath = res.filePaths[0]
-        
-        const filename = path.basename(filepath) || 'unknow file'
-
-        let data = ''
-        const stream = fs.createReadStream(filepath, 'utf-8')
-        stream.on('data', (chunk) => {
-          data += chunk
-        })
-
-        stream.on('end', () => {
-          resolve({ data, filename, filepath })
-        })
-        stream.on('error', (err) => {
-          reject(err)
-        })
+        resolve(filepath)
       })
       .catch((err) => {
         reject(err)

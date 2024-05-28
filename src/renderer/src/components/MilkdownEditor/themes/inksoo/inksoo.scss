@@ -12,6 +12,10 @@
     margin: 0 auto;
     max-width: 600px;
 
+    img {
+      width: 100%;
+    }
+
 
     h1,
     h2,
@@ -29,12 +33,40 @@
         color: $text;
 
         code {
-            background: $border-color;
-            color: $text2;
+            // background: $border-color;
+            color: $primary;
+            font-weight: 900;
             border-radius: 5px;
             font-size: .8rem;
+            font-style: italic;
             padding: .2rem;
             margin: 0 .2rem;
+            background: $bg2;
+            border-bottom: 1px solid $border-color;
+            border-right: 1px solid $border-color;
+
+            &::before {
+                content: '`';
+            }
+
+            &::after {
+                content: '`';
+
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: $primary;
+            font-weight: 900;
+            border-bottom: 2px dashed $primary;
+            transition: .3s;
+            cursor: pointer;
+
+            &:hover {
+                border-bottom: 2px solid $primary;
+
+            }
         }
     }
 
@@ -94,20 +126,16 @@
         h3,
         h4,
         h5,
-        h6 {
+        h6,
+        blockquote,
+        p,
+        ul,
+        ol {
             margin-inline-start: 1rem;
 
         }
 
-        blockquote {
-            margin-inline-start: 1rem;
 
-        }
-
-        p {
-            margin-inline-start: 1rem;
-
-        }
 
         &::before {
             content: '';
@@ -158,6 +186,31 @@
                 background: $bg;
                 color: $text2;
             }
+        }
+    }
+
+    .tableWrapper {
+        margin: 2em 0;
+
+        tbody {
+            padding: 12px 24px;
+        }
+
+
+
+        tr {
+            td {
+                padding: 12px;
+                border: 1px solid $border-color;
+            }
+
+            th {
+                padding: 4px 12px;
+                border: 1px solid $border-color;
+                background: $bg2;
+            }
+
+            border: 1px solid $border-color;
         }
     }
 }

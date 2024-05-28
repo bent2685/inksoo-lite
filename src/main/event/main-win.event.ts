@@ -5,6 +5,7 @@ import icon from '../../../resources/icon.png?asset'
 import { is } from '@electron-toolkit/utils'
 import { loadMenu } from './menu.event'
 import { loadCommonEvents } from './common.event'
+import { loadFileEvents } from './file.event'
 
 export const createMainWindow: () => BrowserWindow = () => {
   const mainWindow = new BrowserWindow({
@@ -25,12 +26,15 @@ export const createMainWindow: () => BrowserWindow = () => {
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
-      contextIsolation: true
+      contextIsolation: true,
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true
     }
   })
 
   loadMenu(mainWindow)
   loadCommonEvents(mainWindow)
+  loadFileEvents(mainWindow)
 
   mainWindow.on('ready-to-show', () => {
     setTimeout(() => {
@@ -42,6 +46,7 @@ export const createMainWindow: () => BrowserWindow = () => {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
+  // mainWindow.webContents.openDevTools()
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.

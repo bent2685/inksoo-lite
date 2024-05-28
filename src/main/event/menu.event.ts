@@ -1,9 +1,11 @@
-import { BrowserWindow, Menu, app, ipcMain } from 'electron'
+import { BrowserWindow, Menu, app, dialog, ipcMain } from 'electron'
 import { chooseFile } from '../actions/choose-file'
 import { save, saveAs } from '../actions/save-file'
-
+import db from '../storage/connect'
+import path from 'path'
+import { changesSaveDialog } from '../actions/save-file'
+import { syncRecentFileByFilePath } from '../utils/file.utils'
 const isMac = process.platform === 'darwin'
-
 let menu: Menu
 
 let mainWindow: BrowserWindow
@@ -35,16 +37,33 @@ export const loadMenu = (win: BrowserWindow) => {
       submenu: [
         isMac ? { role: 'close' } : { role: 'quit' },
         {
-          label: 'Open',
-          accelerator: 'CommandOrControl+O',
+          //! 新增文件
+          label: 'New File',
+          accelerator: 'CommandOrControl+N',
           click: async () => {
-            // 导入文件
-            const res = await chooseFile(['md'])
-            win.webContents.send('open-new-file', res)
+            changesSaveDialog(win, () => {
+              win.webContents.send('new-file-cmd')
+            })
           }
         },
         {
-          // 保存文件
+          //! 导入文件
+          label: 'Open',
+          accelerator: 'CommandOrControl+O',
+          click: async () => {
+            changesSaveDialog(win, async () => {
+              const filepath = await chooseFile(['md'])
+              try {
+                const file = await syncRecentFileByFilePath(filepath)
+                win.webContents.send('file-4-open-reply', file)
+              } catch (e: any) {
+                throw new Error(e.message)
+              }
+            })
+          }
+        },
+        {
+          //! 保存文件
           label: 'Save',
           accelerator: 'CommandOrControl+S',
           click: async () => {
@@ -53,7 +72,7 @@ export const loadMenu = (win: BrowserWindow) => {
           }
         },
         {
-          // 另存为文件
+          //! 另存为文件
           label: 'Save as ...',
           accelerator: 'CommandOrControl+Shift+S',
           click: async () => {

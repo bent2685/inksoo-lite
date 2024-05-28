@@ -1,6 +1,8 @@
 import { BrowserWindow, ipcMain } from 'electron'
 import { save, saveAs } from '../actions/save-file'
 let mainWindow: BrowserWindow
+import db from '../storage/connect'
+
 export const loadCommonEvents = (win: BrowserWindow) => {
   mainWindow = win
 
@@ -10,8 +12,8 @@ export const loadCommonEvents = (win: BrowserWindow) => {
 
   ipcMain.on('save-file', async (_, args: ISaveOption) => {
     // 获取
-    const { filepath, data, opt4Save, taskId } = args
-    const res = await save(filepath!, data!, opt4Save, taskId)
+    const { filepath, data, opt4Save, taskId, opt4Dialog } = args
+    const res = await save(filepath!, data!, opt4Save, taskId, opt4Dialog)
     win.webContents.send('save-file-as-reply', res)
   })
 

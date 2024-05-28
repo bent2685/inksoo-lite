@@ -13,7 +13,13 @@ asarUnpack:
   - resources/**
 win:
   executableName: inksoo-lite
-  icon: build/icons/256x256.png
+  icon: build/icon/icons/256x256.png
+  fileAssociations:
+    - ext: md
+      name: Markdown File
+      description: Markdown File
+      icon: build/icon/icons/256x256.png
+      role: Editor
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -29,7 +35,11 @@ mac:
     - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
-  icon: build/icons/icon.icns
+  icon: build/icon/icons/icon.icns
+  fileAssociations:
+    - ext: md
+      name: Markdown File
+      role: Editor
 dmg:
   artifactName: ${name}-${version}.${ext}
 linux:

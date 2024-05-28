@@ -10,12 +10,16 @@ const isSideBarShow = ref(true)
 const toggleDark = useToggle(isDark)
 import { useSiderDrag } from '@renderer/hooks/use-sider-drag'
 
+import { getPlatform } from '@renderer/utils/common.util'
+
 const { sideBarWidth } = useSiderDrag({
   resizeDomName: '.resize-bar',
   width: 240,
   minWidth: 160,
   maxWidth: 400
 })
+
+const platfrom = getPlatform()
 
 // 监听侧边栏状态
 window.electron.ipcRenderer.on('toggle-sidebar', (_, v) => {
@@ -24,7 +28,7 @@ window.electron.ipcRenderer.on('toggle-sidebar', (_, v) => {
 </script>
 <template>
   <section class="menu-bar-space"></section>
-  <main class="app-layout">
+  <main class="app-layout" :class="{ darwin: platfrom == 'darwin' }">
     <aside v-show="isSideBarShow" :style="{ width: sideBarWidth + 'px' }">
       <SideArea />
     </aside>
@@ -56,7 +60,7 @@ window.electron.ipcRenderer.on('toggle-sidebar', (_, v) => {
   width: 100vw;
 
   aside {
-    background: var(--bg-2-fuzzy);
+    background: $bg2;
     // transition: 0.2s ease-out;
     overflow: hidden;
     display: flex;
@@ -76,6 +80,12 @@ window.electron.ipcRenderer.on('toggle-sidebar', (_, v) => {
     .workbench {
       flex: 1;
       overflow: auto;
+    }
+  }
+
+  &.darwin {
+    aside {
+      background: var(--bg-2-fuzzy);
     }
   }
 }

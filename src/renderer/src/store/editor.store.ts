@@ -14,7 +14,7 @@ export interface IWordsCounter {
 export const useEditorStore = defineStore('editor', () => {
   const filename = ref('')
   const filepath = ref('')
-  const isSaved = ref<boolean>(true)
+  const isSaved = ref<boolean>(false)
   const markdownValue = ref<string>('')
   const wordsStats = ref<IWordsCounter>({
     chars: 0,
@@ -22,11 +22,15 @@ export const useEditorStore = defineStore('editor', () => {
     lines: 0
   })
 
-  const setFilename = (name: string) => {
-    filename.value = name || 'untitle'
+  const setFilename = (name: string | null) => {
+    filename.value = name || 'untitled'
   }
-  const setFilepath = (path: string) => {
-    filepath.value = path
+  const setFilepath = (path: string | null) => {
+    filepath.value = path || ''
+  }
+
+  const setSaved = (b: boolean) => {
+    isSaved.value = b
   }
 
   const execWordsStats /* 计算字数 */ = (markdown: string) => {
@@ -64,10 +68,15 @@ export const useEditorStore = defineStore('editor', () => {
     const taskUuid = uniqueId('task_')
 
     if (!saveNew) {
+      console.log('分支1')
+
       window.electron.ipcRenderer.send('save-file', {
         taskId: taskUuid,
         data: markdownValue.value,
-        filepath: filepath.value
+        filepath: filepath.value,
+        opt4Dialog: {
+          filters: [{ name: 'Markdown Files', extensions: ['md'] }]
+        }
       } as ISaveOption)
     }
     /**
@@ -75,6 +84,8 @@ export const useEditorStore = defineStore('editor', () => {
      * 另存为操作
      */
     if (saveNew) {
+      console.log('分支2')
+
       window.electron.ipcRenderer.send('save-file-as', {
         taskId: taskUuid,
         data: markdownValue.value,
@@ -91,18 +102,27 @@ export const useEditorStore = defineStore('editor', () => {
     window.electron.ipcRenderer.on('save-file-as-reply', (_, args: ISaveAsReturn) => {
       const { filepath, filename, taskId } = args
       if (taskId !== taskUuid) return
-
       // 更新文件路径
+
       setFilename(filename)
       setFilepath(filepath)
       isSaved.value = true
+      window.electron.ipcRenderer.send('file-info-recent', filepath)
+      window.electron.ipcRenderer.once('file-info-recent-reply', (_) => {
+        window.electron.ipcRenderer.send('file-save-okay', args)
+      })
     })
+  })
+
+  window.electron.ipcRenderer.on('check-save', (_) => {
+    window.electron.ipcRenderer.send('check-save-reply', isSaved.value)
   })
 
   return {
     setFilename,
     onMarkdownChange,
     setFilepath,
+    setSaved,
     filepath,
     filename,
     isSaved,

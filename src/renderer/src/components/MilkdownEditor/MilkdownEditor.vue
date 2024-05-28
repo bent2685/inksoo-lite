@@ -10,9 +10,12 @@ import {
   commonmark,
   listItemSchema,
   headingIdGenerator,
-  headingAttr
+  headingAttr,
+  linkSchema,
+  insertImageInputRule
 } from '@milkdown/preset-commonmark'
 import { history, historyProviderConfig } from '@milkdown/plugin-history'
+import { automd } from '@milkdown/plugin-automd'
 import { gfm } from '@milkdown/preset-gfm'
 import { usePrism } from './scripts/use-prism'
 import { $view, insert, replaceAll, outline, getMarkdown } from '@milkdown/utils'
@@ -22,11 +25,12 @@ import { useInksoo } from './scripts/use-inksoo'
 import { useNodeViewFactory } from '@prosemirror-adapter/vue'
 import { useOutlineStore } from '@renderer/store/outline.store'
 import { useEditorStore } from '@renderer/store/editor.store'
+import { useAppStore } from '@renderer/store/app.store'
 const nodeViewFactory = useNodeViewFactory()
 const markdownValue /* markdown默认值 */ = ``
 
 const { setOutline } = useOutlineStore()
-const { setFilename, onMarkdownChange, setFilepath } = useEditorStore()
+const { setFilename, onMarkdownChange, setFilepath, setSaved } = useEditorStore()
 let editorEl: Editor | undefined
 useEditor((root) => {
   const editor = Editor.make()
@@ -37,6 +41,8 @@ useEditor((root) => {
     })
     // 配置历史记录插件
     .use(history)
+    // 自动闭合链接图片等
+    .use(automd)
     .config((ctx) => {
       ctx.set(historyProviderConfig.key, {
         depth: 100,
@@ -66,15 +72,33 @@ useEditor((root) => {
         })
       )
     )
-
+  // 使用Inksoo配置
   useInksoo(editor)
+  // 使用Prism配置
   usePrism(editor)
   editorEl = editor
+  window.electron.ipcRenderer.on('open-new-file', (_, v) => {
+    openNewFile(v)
+  })
+  editorEl?.onStatusChange((e) => {
+    if (e == 'Created') {
+      // 请求新文件
+      window.electron?.ipcRenderer.send('file-4-open')
+      window.electron?.ipcRenderer.on('file-4-open-reply', (_, fileInDb) => {
+        console.log(fileInDb)
+        if (!fileInDb) return
+        const { path } = fileInDb
+        window.electron?.ipcRenderer.send('get-file-by-path', path)
+        window.electron?.ipcRenderer.once('get-file-by-path-reply', (_, file: IChooseFile) => {
+          openNewFile(file)
+        })
+      })
+    }
+  })
   return editor
 })
 
-// 监听打开文件状态
-window.electron.ipcRenderer.on('open-new-file', (_, v) => {
+const openNewFile = async (v: IChooseFile) => {
   const ctx = editorEl?.ctx
   const { filename, data, filepath } = v
   editorEl?.action(replaceAll(data, true))
@@ -83,6 +107,16 @@ window.electron.ipcRenderer.on('open-new-file', (_, v) => {
   setOutline(outline()(ctx!))
   setFilename(filename)
   setFilepath(filepath)
+  setSaved(true)
+}
+
+window.electron.ipcRenderer.on('new-file-cmd', (_) => {
+  const ctx = editorEl?.ctx
+  setFilename(null)
+  setFilepath(null)
+  setSaved(false)
+  editorEl?.action(replaceAll('', true))
+  setOutline(outline()(ctx!))
 })
 </script>
 

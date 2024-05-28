@@ -8,6 +8,14 @@ pre:has(code) {
             color: #888;
         }
 
+        &.comment {
+            color: #666;
+        }
+
+        &.class-name {
+            color: #6799FF;
+        }
+
         &.keyword {
             color: $primary;
         }
@@ -18,7 +26,7 @@ pre:has(code) {
 
         &.string {
             color: #99f;
-            
+
         }
     }
 }

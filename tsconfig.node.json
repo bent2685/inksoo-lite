@@ -5,7 +5,7 @@
     "src/main/*",
     "src/preload/*",
     "src/main/**/*.ts",
-    "./src/types/**/*.d.ts",
+    "./src/types/**/*.d.ts", "src/main/storage/knexfile.js", "src/main/storage/knexfile.js",
   ],
   "compilerOptions": {
     "composite": true,

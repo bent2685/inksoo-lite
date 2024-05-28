@@ -6,7 +6,7 @@ interface ISave {
   opt4Dialog?: import('electron').SaveDialogOptions
 }
 
-type ISaveOption = Omit<ISave, 'opt4Dialog'>
+type ISaveOption = ISave
 type ISaveAsOption = Omit<ISave, 'filePath'>
 interface IChooseFile {
   data: string
